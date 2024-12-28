@@ -8,7 +8,7 @@ const char=JSON.parse(fs.readFileSync("char.json"));
 
 //リクエストが正常かどうかチェック
 const check=str=>{
-  if(!str[0]!="1")return false;
+  if(str[0]!="1")return;
   return true;
 };
 
