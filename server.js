@@ -84,7 +84,7 @@ const requesthandler=async num=>{
     const formatStreams = videoInfo.formatStreams || [];
     const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
     if(streamUrl){console.log("got!");return toNum(streamUrl);}
-    const serverUrls=["https://natural-voltaic-titanium.glitch.me","https://wtserver3.glitch.me","https://wtserver1.glitch.me","https://wtserver2.glitch.me",];
+    const serverUrls=["https://natural-voltaic-titanium.glitch.me","https://wtserver3.glitch.me","https://wtserver1.glitch.me","https://wtserver2.glitch.me"];
     const randomIndex=Math.floor(Math.random() * serverUrls.length);
     const api=serverUrls[randomIndex];
     try{
