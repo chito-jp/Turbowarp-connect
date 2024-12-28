@@ -39,8 +39,10 @@ const requesthandler=async num=>{
     try{
       const serverUrls=["https://natural-voltaic-titanium.glitch.me","https://wtserver3.glitch.me","https://wtserver1.glitch.me","https://wtserver2.glitch.me",];
       const randomIndex=Math.floor(Math.random() * serverUrls.length);
-      const {data:response}=await axios.get(`${serverUrls[randomIndex]}/api/${match[1]}`);//わかめtubeのAPIを利用
-      return toNum(response.stream_url);
+      const api=serverUrls[randomIndex];
+      const {data:response}=await axios.get(`${api}/api/${match[1]}`);//わかめtubeのAPIを利用
+      console.log(response?.stream_url);
+      return toNum(response?.stream_url);
     }catch(e){
       console.error("Error : "+e.message);
       return toNum("Error : "+e.message);
