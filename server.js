@@ -131,7 +131,7 @@ app.get("/refresh", async (req, res) => {
     res.sendStatus(200);
 });
 
-app.get("/api/:id",(req,res)=>{
+app.get("/api/:id",async(req,res)=>{
   const videoId = req.params.id;
   try {
     const videoInfo = await getVideo(videoId);
