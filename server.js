@@ -8,8 +8,8 @@ const char=JSON.parse(fs.readFileSync("char.json"));
 
 //リクエストが正常かどうかチェック
 const check=str=>{
-  if(str[0]!="1")return;
-  return true;
+  if(str[0]=="1")return true;
+  return false;
 };
 
 //リクエストからUNNを取得
@@ -52,8 +52,8 @@ const requesthandler=async num=>{
 };
 
 ws.on("set",async(n,v)=>{
-  if(check(v))return;
-  console.log(`${n} to ${v}`);
+  if(!check(v))return;
+  console.log(`${n} to ${v[0]}`);
   const {length,name,request}=getRequest(v);
   const response=`${length+10}${name}${await requesthandler(request)}`;
   ws.set(n[2],`2${response}`);
@@ -69,6 +69,8 @@ app.get("/",(req,res)=>{
 app.get("/tostr/:num",(req,res)=>{
   res.send(toStr(req.params.num));
 });
+
+console.clear();
 
 const PORT = process.env.PORT || 7777;
 const listener=app.listen(PORT,()=>{
