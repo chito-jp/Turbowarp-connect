@@ -25,7 +25,7 @@ const initializeApis = async () => {
 initializeApis();
 
 const MAX_API_WAIT_TIME = 3000; 
-const MAX_TIME = 10000;
+const MAX_TIME = 15000;
 
 //動画を取得
 const getVideo=async(videoId)=>{
