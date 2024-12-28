@@ -53,6 +53,7 @@ const requesthandler=async num=>{
 
 ws.on("set",async(n,v)=>{
   if(check(v))return;
+  console.log(`${n} to ${v}`);
   const {length,name,request}=getRequest(v);
   const response=`${length+10}${name}${await requesthandler(request)}`;
   ws.set(n[2],`2${response}`);
