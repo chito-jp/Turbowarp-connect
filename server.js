@@ -37,7 +37,9 @@ const requesthandler=async num=>{
   const match=dt.match(/(?:https?:\/\/)?(?:www\.)?youtu(?:\.be\/|be\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w\-]+)/);
   if(match){
     try{
-      const {data:response}=await axios.get(`https://wtserver2.glitch.me/api/${match[1]}`);//わかめtubeのAPIを利用
+      const serverUrls=["https://natural-voltaic-titanium.glitch.me","https://wtserver3.glitch.me","https://wtserver1.glitch.me","https://wtserver2.glitch.me",];
+      const randomIndex=Math.floor(Math.random() * serverUrls.length);
+      const {data:response}=await axios.get(`${serverUrls[randomIndex]}/api/${match[1]}`);//わかめtubeのAPIを利用
       return toNum(response.stream_url);
     }catch(e){
       console.error("Error : "+e.message);
