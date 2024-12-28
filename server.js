@@ -23,17 +23,46 @@ const initializeApis = async () => {
 
 // 初期化
 initializeApis();
-console.log(apis);
+
+const MAX_API_WAIT_TIME = 3000; 
+const MAX_TIME = 10000;
+
+//動画を取得
+const getVideo=async(videoId)=>{
+  const startTime = Date.now();
+
+  for (const instance of apis) {
+    try {
+      const response = await axios.get(`${instance}/api/v1/videos/${videoId}`, { timeout: MAX_API_WAIT_TIME });
+      console.log(`使ってみたURL: ${instance}/api/v1/videos/${videoId}`);
+      
+      if (response.data && response.data.formatStreams) {
+        return response.data; 
+      } else {
+        console.error(`formatStreamsが存在しない: ${instance}`);
+      }
+    } catch (error) {
+      console.error(`エラーだよ: ${instance} - ${error.message}`);
+      instanceErrors.add(instance);
+    }
+
+    if (Date.now() - startTime >= MAX_TIME) {
+      throw new Error("接続がタイムアウトしました");
+    }
+  }
+
+  throw new Error("動画を取得する方法が見つかりません");
+};
+
+
 //リクエストが正常かどうかチェック
 const check=str=>str[0]=="1";
 
 //リクエストからUNNを取得
 const getRequest=str=>{
   const length=Number(str[1]+str[2])-10;
-  let name="";
-  let request="";
-  for(let i=0;i<length;i++)name+=str[i+3];
-  for(let i=0;i<str.length-length-3;i++)request+=str[i+length+3];
+  const name=str.slice(3,3+length);
+  const request=str.slice(3+length);
   return {length,name,request};
 };
 const toStr=num=>{
@@ -51,6 +80,10 @@ const requesthandler=async num=>{
   const dt=toStr(num);
   const match=dt.match(/(?:https?:\/\/)?(?:www\.)?youtu(?:\.be\/|be\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w\-]+)/);
   if(match){
+    const videoInfo=await getVideo(match[1]);
+    const formatStreams = videoInfo.formatStreams || [];
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
+    if(streamUrl){console.log("got!");return toNum(streamUrl);}
     const serverUrls=["https://natural-voltaic-titanium.glitch.me","https://wtserver3.glitch.me","https://wtserver1.glitch.me","https://wtserver2.glitch.me",];
     const randomIndex=Math.floor(Math.random() * serverUrls.length);
     const api=serverUrls[randomIndex];
@@ -91,6 +124,49 @@ app.get("/tonum/:str",(req,res)=>{
 
 app.get("/apis",(req,res)=>{
   res.send(apis);
+});
+
+app.get("/refresh", async (req, res) => {
+    await initializeApis();
+    res.sendStatus(200);
+});
+
+app.get("/api/:id",(req,res)=>{
+  const videoId = req.params.id;
+  try {
+    const videoInfo = await getVideo(videoId);
+    
+    const formatStreams = videoInfo.formatStreams || [];
+    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
+    
+    const audioStreams = videoInfo.adaptiveFormats || [];
+    
+    let highstreamUrl = audioStreams
+      .filter(stream => stream.container === 'mp4' && stream.resolution === '1080p')
+      .map(stream => stream.url)[0];
+    
+    const audioUrl = audioStreams
+      .filter(stream => stream.container === 'm4a' && stream.audioQuality === 'AUDIO_QUALITY_MEDIUM')
+      .map(stream => stream.url)[0];
+    
+    const templateData = {
+      stream_url: streamUrl,
+      highstreamUrl: highstreamUrl,
+      audioUrl: audioUrl,
+      videoId: videoId,
+      channelId: videoInfo.authorId,
+      channelName: videoInfo.author,
+      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
+      videoTitle: videoInfo.title,
+      videoDes: videoInfo.descriptionHtml,
+      videoViews: videoInfo.viewCount,
+      likeCount: videoInfo.likeCount
+    };
+          
+    res.json(templateData);
+  } catch (error) {
+    res.status(500).send("動画を取得できません");
+  }
 });
 
 console.clear();
