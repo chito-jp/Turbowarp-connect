@@ -55,7 +55,8 @@ ws.on("set",async(n,v)=>{
   if(check(v))return;
   const {length,name,request}=getRequest(v);
   const response=`${length+10}${name}${await requesthandler(request)}`;
-  ws.set(n[2],`2${response}`)
+  ws.set(n[2],`2${response}`);
+  console.log(`Cloud is seted on ${n}`);
 });
 
 const app=express();
