@@ -14,12 +14,18 @@ const getApis=async()=>{
       return null;
     }
 };
-let apis=(async()=>{return await getApis()})();
-//リクエストが正常かどうかチェック
-const check=str=>{
-  if(str[0]=="1")return true;
-  return false;
+
+let apis;
+const initializeApis = async () => {
+  apis = await getApis();
+  console.log(apis);
 };
+
+// 初期化
+initializeApis();
+console.log(apis);
+//リクエストが正常かどうかチェック
+const check=str=>str[0]=="1";
 
 //リクエストからUNNを取得
 const getRequest=str=>{
@@ -83,7 +89,7 @@ app.get("/tonum/:str",(req,res)=>{
   res.send(toNum(req.params.str));
 });
 
-app.get("/apis",()=>{
+app.get("/apis",(req,res)=>{
   res.send(apis);
 });
 
