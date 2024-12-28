@@ -36,15 +36,15 @@ const requesthandler=async num=>{
   const dt=toStr(num);
   const match=dt.match(/(?:https?:\/\/)?(?:www\.)?youtu(?:\.be\/|be\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w\-]+)/);
   if(match){
+    const serverUrls=["https://natural-voltaic-titanium.glitch.me","https://wtserver3.glitch.me","https://wtserver1.glitch.me","https://wtserver2.glitch.me",];
+    const randomIndex=Math.floor(Math.random() * serverUrls.length);
+    const api=serverUrls[randomIndex];
     try{
-      const serverUrls=["https://natural-voltaic-titanium.glitch.me","https://wtserver3.glitch.me","https://wtserver1.glitch.me","https://wtserver2.glitch.me",];
-      const randomIndex=Math.floor(Math.random() * serverUrls.length);
-      const api=serverUrls[randomIndex];
       const {data:response}=await axios.get(`${api}/api/${match[1]}`);//わかめtubeのAPIを利用
       console.log(response?.stream_url);
       return toNum(response?.stream_url);
     }catch(e){
-      console.error("Error : "+e.message);
+      console.error("Error : "+e.message+api);
       return toNum("Error : "+e.message);
     }
   };
