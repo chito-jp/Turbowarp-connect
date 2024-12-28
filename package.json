@@ -1,0 +1,22 @@
+{
+  "name": "",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@turbowarp/mist": "0.0.2",
+    "express": "^4.21.2",
+    "axios": "^1.7.9"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node"
+  ],
+  "type": "module"
+}
