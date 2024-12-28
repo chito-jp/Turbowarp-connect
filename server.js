@@ -46,11 +46,12 @@ const getVideo=async(videoId)=>{
     }
 
     if (Date.now() - startTime >= MAX_TIME) {
-      throw new Error("接続がタイムアウトしました");
+      console.log("接続がタイムアウトしました"+instance);
     }
   }
 
-  throw new Error("動画を取得する方法が見つかりません");
+  console.error("動画を取得する方法が見つかりません");
+  return "Error : Instance is Timeout";
 };
 
 
