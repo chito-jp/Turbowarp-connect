@@ -3,9 +3,18 @@ import express from "express";
 import axios from "axios";
 import fs from "fs";
 
-let ws=new Mist({projectId:"1114861075",userAgent:"chito"});
+let ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
 const char=JSON.parse(fs.readFileSync("char.json"));
-
+const getApis=async()=>{
+    try {
+      const {data:response} = await axios.get('https://wtserver.glitch.me/apis');
+      return response;
+    } catch (e) {
+      console.error('データの取得に失敗しました:', e.message);
+      return null;
+    }
+};
+let apis=(async()=>{return await getApis()})();
 //リクエストが正常かどうかチェック
 const check=str=>{
   if(str[0]=="1")return true;
@@ -68,6 +77,14 @@ app.get("/",(req,res)=>{
 
 app.get("/tostr/:num",(req,res)=>{
   res.send(toStr(req.params.num));
+});
+
+app.get("/tonum/:str",(req,res)=>{
+  res.send(toNum(req.params.str));
+});
+
+app.get("/apis",()=>{
+  res.send(apis);
 });
 
 console.clear();
