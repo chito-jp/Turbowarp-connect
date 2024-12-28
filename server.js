@@ -36,7 +36,7 @@ const requesthandler=async num=>{
   const dt=toStr(num);
   const match=dt.match(/(?:https?:\/\/)?(?:www\.)?youtu(?:\.be\/|be\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w\-]+)/);
   if(match){
-    const {data:response}=await axios.get(`https://wakamets.glitch.me/api/login/${match[1]}`);//一時的にわかめtubeのAPIを利用。後々自分でAPI立てるよてい
+    const {data:response}=await axios.get(`https://wakame02qq.glitch.me/api/login/${match[1]}`);//一時的にわかめtubeのAPIを利用。後々自分でAPI立てるよてい
     return toNum(response.stream_url);
   };
   return num;
