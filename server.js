@@ -43,7 +43,6 @@ const getVideo=async(videoId)=>{
       }
     } catch (error) {
       console.error(`エラーだよ: ${instance} - ${error.message}`);
-      instanceErrors.add(instance);
     }
 
     if (Date.now() - startTime >= MAX_TIME) {
