@@ -2,6 +2,8 @@ import Mist from "@turbowarp/mist";
 import express from "express";
 import axios from "axios";
 import fs from "fs";
+import cors from "cors";
+console.log(cors);
 
 let ws;
 ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
@@ -110,6 +112,7 @@ ws.on("set",async(n,v)=>{
 });
 
 const app=express();
+app.use(cors());
 
 app.get("/",(req,res)=>{
   res.send("Server is running");
