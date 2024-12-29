@@ -3,7 +3,8 @@ import express from "express";
 import axios from "axios";
 import fs from "fs";
 
-let ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
+let ws;
+ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
 const char=JSON.parse(fs.readFileSync("char.json"));
 const getApis=async()=>{
     try {
@@ -128,6 +129,7 @@ app.get("/apis",(req,res)=>{
 
 app.get("/refresh", async (req, res) => {
     await initializeApis();
+    ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
     res.sendStatus(200);
 });
 
