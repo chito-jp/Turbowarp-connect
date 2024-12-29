@@ -131,46 +131,6 @@ app.get("/refresh", async (req, res) => {
     res.sendStatus(200);
 });
 
-app.get("/api/:id",async(req,res)=>{
-  const videoId = req.params.id;
-  try {
-    const videoInfo = await getVideo(videoId);
-    
-    const formatStreams = videoInfo.formatStreams || [];
-    const streamUrl = formatStreams.reverse().map(stream => stream.url)[0];
-    
-    const audioStreams = videoInfo.adaptiveFormats || [];
-    
-    let highstreamUrl = audioStreams
-      .filter(stream => stream.container === 'mp4' && stream.resolution === '1080p')
-      .map(stream => stream.url)[0];
-    
-    const audioUrl = audioStreams
-      .filter(stream => stream.container === 'm4a' && stream.audioQuality === 'AUDIO_QUALITY_MEDIUM')
-      .map(stream => stream.url)[0];
-    
-    const templateData = {
-      stream_url: streamUrl,
-      highstreamUrl: highstreamUrl,
-      audioUrl: audioUrl,
-      videoId: videoId,
-      channelId: videoInfo.authorId,
-      channelName: videoInfo.author,
-      channelImage: videoInfo.authorThumbnails?.[videoInfo.authorThumbnails.length - 1]?.url || '',
-      videoTitle: videoInfo.title,
-      videoDes: videoInfo.descriptionHtml,
-      videoViews: videoInfo.viewCount,
-      likeCount: videoInfo.likeCount
-    };
-          
-    res.json(templateData);
-  } catch (error) {
-    res.status(500).send("動画を取得できません");
-  }
-});
-
-console.clear();
-
 const PORT = process.env.PORT || 7777;
 const listener=app.listen(PORT,()=>{
   console.log(`Server is running on PORT ${listener.address().port}`);
