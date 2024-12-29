@@ -135,10 +135,10 @@ app.get("/apis",(req,res)=>{
 });
 
 app.get("/refresh", async (req, res) => {
+    res.sendStatus(200);
     await initializeApis();
     ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
     console.log("Refreshed!");
-    res.sendStatus(200);
 });
 
 const PORT = process.env.PORT || 7777;
