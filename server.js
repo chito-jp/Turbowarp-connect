@@ -100,8 +100,8 @@ const requesthandler=async num=>{
 };
 
 ws.on("set",async(n,v)=>{
+  console.log(n);
   if(!check(v))return;
-  console.log(`${n} to ${v[0]}`);
   const {length,name,request}=getRequest(v);
   const response=`${length+10}${name}${await requesthandler(request)}`;
   ws.set(n[2],`2${response}`);
@@ -138,6 +138,7 @@ app.get("/refresh", async (req, res) => {
     res.sendStatus(200);
     await initializeApis();
     ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
+    console.log("refreshed!");
 });
 
 const PORT = process.env.PORT || 7777;
