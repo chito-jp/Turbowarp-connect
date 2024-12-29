@@ -2,7 +2,6 @@ import Mist from "@turbowarp/mist";
 import express from "express";
 import axios from "axios";
 import fs from "fs";
-import cors from "cors";
 
 let ws;
 ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
@@ -110,7 +109,14 @@ ws.on("set",async(n,v)=>{
 });
 
 const app=express();
-app.use(cors());
+const allowCrossDomain = (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST");
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
+};
+app.use(allowCrossDomain);
+
 
 app.get("/",(req,res)=>{
   res.send("Server is running");
