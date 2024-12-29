@@ -138,7 +138,6 @@ app.get("/refresh", async (req, res) => {
     res.sendStatus(200);
     await initializeApis();
     ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
-    console.log("Refreshed!");
 });
 
 const PORT = process.env.PORT || 7777;
