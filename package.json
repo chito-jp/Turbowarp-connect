@@ -9,8 +9,7 @@
   "dependencies": {
     "@turbowarp/mist": "0.0.2",
     "express": "^4.21.2",
-    "axios": "^1.7.9",
-    "cors": "^2.8.5"
+    "axios": "^1.7.9"
   },
   "engines": {
     "node": "16.x"
