@@ -130,6 +130,7 @@ app.get("/apis",(req,res)=>{
 app.get("/refresh", async (req, res) => {
     await initializeApis();
     ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
+    console.log("Refreshed!");
     res.sendStatus(200);
 });
 
