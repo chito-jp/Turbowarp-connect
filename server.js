@@ -3,7 +3,6 @@ import express from "express";
 import axios from "axios";
 import fs from "fs";
 import cors from "cors";
-console.log(cors);
 
 let ws;
 ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
@@ -21,7 +20,6 @@ const getApis=async()=>{
 let apis;
 const initializeApis = async () => {
   apis = await getApis();
-  console.log(apis);
 };
 
 // 初期化
