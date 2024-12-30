@@ -138,6 +138,14 @@ app.get("/refresh", async (req, res) => {
     res.sendStatus(200);
     await initializeApis();
     ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
+    ws.on("set",async(n,v)=>{
+  console.log(n);
+  if(!check(v))return;
+  const {length,name,request}=getRequest(v);
+  const response=`${length+10}${name}${await requesthandler(request)}`;
+  ws.set(n[2],`2${response}`);
+  console.log(`Cloud is seted on ${n}`);
+});
     console.log("refreshed!");
 });
 
