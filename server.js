@@ -4,7 +4,7 @@ import axios from "axios";
 import fs from "fs";
 
 let ws;
-ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
+ws=new Mist({projectId:"1115558643",userAgent:"chito-bot"});
 const char=JSON.parse(fs.readFileSync("char.json"));
 const getApis=async()=>{
     try {
@@ -78,6 +78,14 @@ const toNum=str=>{
 
 const requesthandler=async num=>{
   const dt=toStr(num);
+  if(dt.startsWith("@get")){
+    let _=dt.slice(5);
+    if(_.startsWith("neo")){
+      const {data:response}=await axios.get(`https://tetris-beta-api.onrender.com/api/user/${_.slice(4)}/macaron-tet`);
+      const {rate,ranking,rank,apm,pps}=response.data.neo;
+      return toNum(`name: ${_.slice(4)}\\nid: ${response.data.id}\\n rate: ${rate}\\nranking: ${ranking}\\nrank: ${rank}\\napm: ${apm}\\npps: ${pps}`);
+    }
+  }
   const match=dt.match(/(?:https?:\/\/)?(?:www\.)?youtu(?:\.be\/|be\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w\-]+)/);
   if(match){
     const videoInfo=await getVideo(match[1]);
@@ -137,7 +145,7 @@ app.get("/apis",(req,res)=>{
 app.get("/refresh", async (req, res) => {
     res.sendStatus(200);
     await initializeApis();
-    ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
+    ws=new Mist({projectId:"1115558643",userAgent:"chito-bot"});
     ws.on("set",async(n,v)=>{
   console.log(n);
   if(!check(v))return;
