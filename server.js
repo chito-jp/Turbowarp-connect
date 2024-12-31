@@ -4,7 +4,7 @@ import axios from "axios";
 import fs from "fs";
 
 let ws;
-ws=new Mist({projectId:"1115558643",userAgent:"chito-bot"});
+ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
 const char=JSON.parse(fs.readFileSync("char.json"));
 const getApis=async()=>{
     try {
@@ -145,7 +145,7 @@ app.get("/apis",(req,res)=>{
 app.get("/refresh", async (req, res) => {
     res.sendStatus(200);
     await initializeApis();
-    ws=new Mist({projectId:"1115558643",userAgent:"chito-bot"});
+    ws=new Mist({projectId:"1114861075",userAgent:"chito-bot"});
     ws.on("set",async(n,v)=>{
   console.log(n);
   if(!check(v))return;
